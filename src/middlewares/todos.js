@@ -7,7 +7,7 @@ export const validateTodo = (req, res, next) => {
     return errorResponse(
       res,
       500,
-      res.__(`Validation error: ${error.details[0].message.replace(/"/g, '')}`)
+      `Validation error: ${error.details[0].message.replace(/"/g, '')}`
     );
   }
   return next();

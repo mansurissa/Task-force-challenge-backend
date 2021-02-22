@@ -3,7 +3,7 @@ import successHandler from '../helpers/successHandler';
 import Todos from '../models/todosModel';
 
 export const createTodo = async (req, res) => {
-  await Todos.findOne({ title: `${title}` }, (result) => {
+  await Todos.findOne({ title: `${req.body.title}` }, (result) => {
     if (result) {
       errorResponse(res, 500, 'The Todo with that title already exists');
     }
@@ -25,7 +25,7 @@ export const getAllTodos = async (req, res) => {
   try {
     const todos = await Todos.find().sort({ created_at: -1 });
     return successHandler(res, 200, 'successfully fetched all todos', {
-      todossCount: todos.length,
+      todosCount: todos.length,
       todos
     });
   } catch (error) {
@@ -36,7 +36,7 @@ export const getAllTodos = async (req, res) => {
 export const getOneTodo = async (req, res) => {
   try {
     const oneTodo = await Todos.findById(req.params.id);
-    return successHandler(res, 200, 'Todo got successfully', oneTodo);
+    return successHandler(res, 200, 'Todo fetched successfully', oneTodo);
   } catch (error) {
     return errorResponse(res, 404, 'not found on Todos list', error);
   }
@@ -44,8 +44,6 @@ export const getOneTodo = async (req, res) => {
 
 export const deleteTodo = async (req, res) => {
   try {
-    const foundTodo = await Todos.findById(req.params.id);
-    if (!foundTodo) return errorResponse(res, 404, "can't find that Todo");
     await Todos.deleteOne({ _id: foundTodo._id });
     return successHandler(res, 200, 'Deleted Todo successfully');
   } catch (error) {
