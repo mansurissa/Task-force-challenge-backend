@@ -3,11 +3,10 @@ import successHandler from '../helpers/successHandler';
 import Todos from '../models/todosModel';
 
 export const createTodo = async (req, res) => {
-  await Todos.findOne({ title: `${req.body.title}` }, (result) => {
-    if (result) {
-      errorResponse(res, 500, 'The Todo with that title already exists');
-    }
-  });
+  const result = await Todos.findOne({ title: `${req.body.title}` });
+  if (result) {
+    return errorResponse(res, 500, 'The Todo with that title already exists');
+  }
 
   try {
     const todo = await Todos.create({
@@ -58,9 +57,6 @@ export const updateTodo = async (req, res) => {
       req.body,
       { new: true }
     );
-    if (!updatedTodo) {
-      return errorResponse(res, 404, " Can't find that Todo on list");
-    }
     return successHandler(res, 201, 'Updated Todo successfully', updatedTodo);
   } catch (error) {
     return errorResponse(res, 500, 'There was a problem updating Todo', error);
