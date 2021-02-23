@@ -35,8 +35,10 @@ export const signin = async (req, res) => {
           );
           return successHandler(res, 200, 'succesfull loged in', {
             token,
-            user: foundUser
+            user: foundUser[0]
           });
+        } else {
+          return errorResponse(res, 401, 'incorect password');
         }
       });
     } catch (error) {
