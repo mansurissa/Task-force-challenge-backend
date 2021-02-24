@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import connectDb from './config/db';
-// import docRouter from './documentation';
+import docRouter from './documentation';
 import errorResponse from './helpers/errorHandeler';
 import router from './routers/router';
 config();
@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use(helmet());
 app.use(morgan('dev'));
-// app.use('/api/documentation', docRouter);
+app.use('/api/documentation', docRouter);
 app.use('/api', router);
 app.get('/', (req, res) => res.send('Welcome to Task force Todos API'));
 app.use((req, res) => {
