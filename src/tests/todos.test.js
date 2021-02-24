@@ -47,13 +47,26 @@ describe('Todos related tests:', () => {
       .set('auth', token);
     expect(res.status).to.be.equal(201);
   });
-  it('Should Get todo item', async () => {
+  it('Should Get todos', async () => {
     const token = await siginIn(mockLoginCredentials);
     const res = await request(app).get('/api/todos').set('auth', token);
     expect(res.status).to.be.equal(200);
   });
-  it('Should not Get todo item no (token)', async () => {
+  it('Should not Get todos no (token)', async () => {
     const res = await request(app).get('/api/todos').set('auth', 'm');
     expect(res.status).to.be.equal(401);
+  });
+  it('Should update todo item', async () => {
+    const token = await siginIn(mockLoginCredentials);
+    const todo = await Todo.create(mockTodo);
+    await todo.save();
+    const res = await request(app)
+      .patch(`/api/todos/${todo._id}`)
+      .send({
+        title: 'testing titl2',
+        description: 'This description is being used in test2'
+      })
+      .set('auth', token);
+    expect(res.status).to.be.equal(200);
   });
 });

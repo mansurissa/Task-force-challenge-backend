@@ -57,7 +57,7 @@ export const updateTodo = async (req, res) => {
       req.body,
       { new: true }
     );
-    return successHandler(res, 201, 'Updated Todo successfully', updatedTodo);
+    return successHandler(res, 200, 'Updated Todo successfully', updatedTodo);
   } catch (error) {
     return errorResponse(res, 500, 'There was a problem updating Todo', error);
   }
